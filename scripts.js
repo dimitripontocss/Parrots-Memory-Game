@@ -3,12 +3,70 @@ let firstCard, secondCard;
 let lock = false;
 let contPontuacao=0;
 let contjogadas=0;
+let format;
+
+
+// Cronometro
+
+
+let minuto = 0;
+let segundo = 0;
+
+let tempo = 1000;
+let cron;
+
+
+function start() {
+    cron = setInterval(() => { timer(); }, tempo);
+}
+
+
+function pause() {
+    clearInterval(cron);
+}
+
+
+function stop() {
+    clearInterval(cron);
+    minuto = 0;
+    segundo = 0;
+
+    let zerar = document.querySelector(".timer");
+    zerar.innerHTML = '00:00';
+}
+
+
+function timer() {
+    segundo++; 
+
+    if (segundo == 59) { 
+        segundo = 0; 
+        minuto++; 
+
+        if (minuto == 59) { 
+            minuto = 0;
+           
+        }
+    }
+
+   
+   format =  (minuto < 10 ? '0' + minuto : minuto) + ':' + (segundo < 10 ? '0' + segundo : segundo);
+    
+   
+   let resultado = document.querySelector(".timer");
+   resultado.innerHTML = format;
+
+    
+    return format;
+}
+
+// Cronometro
 
 function reseta(){
     [firstCard, secondCard, lock] = [null, null, false];
 }
 
-function remover(isMatch = false){
+function remover(){
     lock = true;
     setTimeout( () => {
         firstCard.classList.remove("flip");
@@ -47,8 +105,15 @@ function flipCard(elemento){
 
     verificar();
     if(contPontuacao === (quantidade/2)){
-        alert(`Você ganhou em ${(contjogadas)} jogadas!`);
+        if(minuto !== 0){alert(`Você ganhou em ${(contjogadas)} jogadas! Em ${minuto} minutos e ${segundo} segundos`);}
+        else{alert(`Você ganhou em ${(contjogadas)} jogadas! Em ${segundo} segundos`);}
+        pause();
+        reiniciar();
     }
+}
+
+function comparador() { 
+	return Math.random() - 0.5; 
 }
 
 function montaContainer(){
@@ -76,9 +141,7 @@ for(let i = 0; i < quantidade; i++){
     imagesRND[i] = images[i];
 }
  
-imagesRND.sort(()=>{
-    return 0.5 - Math.random();
-});
+imagesRND.sort(comparador);
 
 let cartaHTML = "";
 
@@ -95,9 +158,8 @@ let cartaHTML = "";
     
 
 container.innerHTML = cartaHTML;
+start();
 }
-
-
 
 
 window.onload = function quantasCartas(){
@@ -115,6 +177,33 @@ window.onload = function quantasCartas(){
     
 }
 
+function quantasCartasReiniciar(){
+    quantidade = prompt("Escolha quantas cartas voce quer jogar:");
+    if((quantidade >= 4 && quantidade <= 14) && (quantidade % 2 === 0)){
+       
+        montaContainer();
+            
+            }
+    else {
+        alert("Número de cartas incompatível com o jogo.");
+        quantasCartas();
+       
+    }
+    
+}
 
 
+function reiniciar(){
+    const resposta = prompt("Quer jogar novamente? Digite sim ou não");
+    console.log(resposta);
+    if( resposta === "sim"){
+        contPontuacao = 0;
+        contjogadas = 0;
+        stop();
+        quantasCartasReiniciar();
+    }
+    if( resposta === "não"){
+        return 0;
+    }
+}
 
