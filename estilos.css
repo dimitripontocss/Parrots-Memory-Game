@@ -43,6 +43,7 @@ body{
     height: 146px;
     background-color: #A7E9AF;
     margin-right: 35px;
+    margin-bottom: 10px;
     border-radius: 5px;
     border: 1px solid #99CEA8;
     transition: 0.5s;
@@ -70,4 +71,10 @@ body{
 
 .flip .back-face{
     display: none;
+}
+
+@media (max-width: 810px){
+    .timer{
+        top: 25px;
+        }
 }
