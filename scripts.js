@@ -93,17 +93,22 @@ function verificar(){
 
 
 function flipCard(elemento){
-    contjogadas += 1;
+    
     if(lock) return false;
     const lista = elemento.classList;
     lista.add("flip");
     if(!firstCard){
         firstCard = elemento;
+        contjogadas += 1;
         return false;
     }
-    secondCard = elemento;
+    if(elemento != firstCard){
+        secondCard = elemento;
+        contjogadas += 1;
+        verificar();
+    }
 
-    verificar();
+    
     if(contPontuacao === (quantidade/2)){
         if(minuto !== 0){alert(`Você ganhou em ${(contjogadas)} jogadas! Em ${minuto} minutos e ${segundo} segundos`);}
         else{alert(`Você ganhou em ${(contjogadas)} jogadas! Em ${segundo} segundos`);}
